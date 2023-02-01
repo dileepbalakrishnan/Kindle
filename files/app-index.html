@@ -1,0 +1,313 @@
+<html lang="en">
+<head>
+    <title>Kindle For Desktop</title>
+    <meta name="app-name" content="Kryptonite"/>
+    <meta name="app-type" content="DesktopApp"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <meta name="HandheldFriendly" content="true"/>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .initialLoading {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            padding: 0 16px;
+        }
+
+        .loadingSpinner {
+            -webkit-animation: spin 1s linear infinite;
+            -moz-animation: spin 1s linear infinite;
+            -ms-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+            width: 4rem;
+            height: 4rem;
+        }
+
+        .bypass {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .bypass a {
+            position: absolute;
+            top: -100px;
+            z-index: 102;
+            margin-left: 7px;
+            padding: 7px 8px 7px 8px;
+            background-color: #fff;
+            border: 1px solid #555;
+            border-radius: 3px;
+            text-decoration: none;
+            color: rgba(82, 143, 216, 1);
+        }
+
+        .bypass a:focus {
+            top: 13px;
+        }
+
+        @-webkit-keyframes spin {
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spin {
+            100% {
+                -moz-transform: rotate(360deg);
+            }
+        }
+
+        @-ms-keyframes spin {
+            100% {
+                -ms-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<script id="i18n-strings" type="application/json">
+    {
+        "k_language_tag": "en-US",
+        "weblibrary_view_list": "List",
+        "weblibrary_volume_see_all": "See all: ${x} volumes",
+        "weblibrary_volume_see_all_singular": "See all: 1 volume",
+        "weblibrary_unathorized_error_message": "Sorry, you've been idle too long on this page. Please sign in again with your Amazon account to access your library",
+        "weblibrary_sign_out": "Sign Out",
+        "weblibrary_app_error_title": "Oh dear...",
+        "weblibrary_no_internet_error_title": "No Internet Connection",
+        "weblibrary_search_cancel": "Cancel",
+        "weblibrary_view_header": "VIEW",
+        "weblibrary_empty_search_title": "We couldn't find a match in your library...",
+        "weblibrary_issue_position": "Chapter ${x}",
+        "weblibrary_volume_position": "Volume ${x}",
+        "weblibrary_empty_search_message": "Try again with another search.",
+        "weblibrary_network_error_title": "A Network Error Occurred",
+        "weblibrary_sort_purchase": "Purchase Order",
+        "weblibrary_sort_header": "SORT",
+        "weblibrary_bookmark_banner_message": "Access your Kindle manga straight from your home screen. Tap<span class=\"wl-icon-share\" aria-label=\"share icon\" role=\"presentation\"></span>and then tap '<b>Add to Home Screen</b>'.\n",
+        "weblibrary_empty_library": "You don't own any books yet.",
+        "weblibrary_view_grid": "Grid",
+        "weblibrary_test_string": "test",
+        "weblibrary_app_error_message": "Looks like something went wrong.",
+        "weblibrary_search_placeholder": "Search Your Manga Library",
+        "weblibrary_shop_the_store": "Kindle Store",
+        "weblibrary_sort_purchase_rev": "Purchase Order (Reverse)",
+        "weblibrary_app_error_call_to_action": "Try refreshing the page.",
+        "weblibrary_go_to_manga_store": "Kindle Manga Store",
+        "weblibrary_your_manga_bookshelf_section": "YOUR MANGA LIBRARY",
+        "weblibrary_ok": "Ok",
+        "weblibrary_help": "Help",
+        "weblibrary_issue_see_all": "See all: ${x} chapters",
+        "weblibrary_issue_see_all_singular": "See all: 1 chapter",
+        "weblibrary_unathorized_error_title": "Please sign in",
+        "weblibrary_error_title": "An Error Occurred",
+        "weblibrary_read_now": "Read Now",
+        "weblibrary_issue_count": "${x} chapters",
+        "weblibrary_issue_count_singular": "${x} chapter",
+        "weblibrary_no_internet_error_message": "Please check your Wi-Fi or mobile network connection and try again.",
+        "weblibrary_try_again_button_error": "Try Again",
+        "weblibrary_recently_purchased": "Recently Purchased",
+        "weblibrary_kindle_menu_section": "KINDLE",
+        "weblibrary_sort_recent": "Recent",
+        "weblibrary_feedback": "Feedback",
+        "weblibrary_volume_count": "${x} volumes",
+        "weblibrary_volume_count_singular": "${x} volume",
+        "weblibrary_dismiss_button_error": "Dismiss",
+        "weblibrary_generic_error_message": "An error occured",
+        "weblibrary_read_in_kindle_app": "Read in Kindle App",
+        "weblibrary_sort_title": "Title",
+        "weblibrary_sort_author": "Author",
+        "weblibrary_sort_name": "Name",
+        "k_author_conjunction": " and ",
+        "k_L_sample_badge_text": "SAMPLE",
+        "weblibrary_kryptonite_search_placeholder": "Search your Kindle",
+        "weblibrary_sortby": "Sort by:",
+        "weblibrary_filtered_by": "Filtered by:",
+        "weblibrary_clear_all": "Clear All",
+        "weblibrary_filter": "Filter",
+        "weblibrary_remove_filter": "Remove filter",
+        "weblibrary_filter_section_category": "Category",
+        "weblibrary_filter_section_subscriptions": "Subscriptions",
+        "weblibrary_filter_section_status": "Status",
+        "weblibrary_sort_title_dropdown": "Sort",
+        "weblibrary_downloaded_title": "Downloaded",
+        "weblibrary_all_title": "All",
+        "weblibrary_kryptonite_welcome_title": "Welcome! Things look a little different around here.",
+        "weblibrary_kryptonite_got_it_button": "Got It",
+        "k_R_dialog_annotation_pane_title": "Notes & Highlights",
+        "weblibrary_kryptonite_tou": "Terms of Use",
+        "weblibrary_kryptonite_legal": "Legal Notices",
+        "weblibrary_kryptonite_privacy": "Privacy",
+        "weblibrary_kryptonite_contact": "Contact Us",
+        "weblibrary_kryptonite_signout": "Sign Out",
+        "weblibrary_kryptonite_help_url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=200701430&ref_=kcr_help_menu",
+        "weblibrary_kryptonite_tou_url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=200699130&ref_=kcr_terms_menu",
+        "weblibrary_kryptonite_legal_url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=200701450&ref_=kcr_legalnotices_menu",
+        "weblibrary_kryptonite_privacy_url": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GX7NJQ4ZB8MHFRNJ&ref_=kcr_privacy_menu",
+        "weblibrary_book_not_supported_button_ios": "https://m.media-amazon.com/images/G/01/kindle/weblibrary/appstore_us.svg",
+        "weblibrary_book_not_supported_button_android": "https://m.media-amazon.com/images/G/01/kindle/weblibrary/playstore_us.png",
+        "weblibrary_book_not_supported_button_pcmac": "https://m.media-amazon.com/images/G/01/kindle/weblibrary/pcmac_us.png",
+        "weblibrary_book_not_supported_main": "We are sorry. <b>Kindle</b> can’t open this book. You can read it with the free Kindle app for Windows, Mac, Android or iOS",
+        "weblibrary_book_not_supported_alt_ios": "Download on the App Store (Apple)",
+        "weblibrary_book_not_supported_alt_android": "Get it on Google Play (Android)",
+        "weblibrary_book_not_supported_alt_pc": "Download for PC & Mac",
+        "weblibrary_book_not_supported_close": "Close",
+        "weblibrary_kryptonite_settings": "Settings",
+        "weblibrary_kryptonite_open_book": "Open Book",
+        "weblibrary_kryptonite_open_sample": "Open Sample",
+        "weblibrary_kryptonite_open_book_in_new_tab": "Open Book in New Tab",
+        "weblibrary_kryptonite_open_sample_in_new_tab": "Open Sample in New Tab",
+        "weblibrary_kryptonite_delete_sample_main": "Delete Sample",
+        "weblibrary_kryptonite_delete_sample_q": "<b>Delete Sample?</b>",
+        "weblibrary_kryptonite_delete_sample_title_fallback": "this book",
+        "weblibrary_kryptonite_delete_sample_conf": "Delete",
+        "weblibrary_kryptonite_sample_ok_main": "<b>Successful</b>",
+        "weblibrary_kryptonite_sample_ok_body": "The book has been successfully deleted.",
+        "weblibrary_kryptonite_sample_already_main": "<b>Already Deleted</b>",
+        "weblibrary_kryptonite_sample_already_body": "This book has already been successfully deleted. It will take a few minutes until it will be removed from your library.",
+        "weblibrary_cover_placeholder_alt": "Missing cover image for ${bookTitle}",
+        "weblibrary_cookies_main": "We only use cookies and similar tools (collectively, ${cookies}) to provide our services, including to recognize you when you sign-in, keep track of your settings, and deliver content. Other Amazon services may use cookies for additional purposes. To learn more about how Amazon uses cookies, please read the ${URL}.",
+        "weblibrary_cookies_quotes": "cookies",
+        "weblibrary_cookies_link_url": "https://www.amazon.co.uk/gp/help/customer/display.html?ie=UTF8&nodeId=201890250",
+        "weblibrary_cookies_link_title": "Amazon Cookies Notice",
+        "weblibrary_kindle_store_url": "https://www.amazon.com/Kindle-eBooks/b?ie=UTF8&node=154606011&ref_=kcr_store",
+        "weblibrary_manga_store_url": "https://www.amazon.co.jp/kindle-dbs/manga-store?ref_=kcr_store",
+        "weblibrary_kryptonite_delete_sample_msg": "This will permanently remove ${bookName} from your account.",
+        "k_L_sidebar_library": "Library",
+        "k_L_sidebar_books": "Books",
+        "k_L_sidebar_samples": "Samples",
+        "k_L_sidebar_documents": "Documents",
+        "k_L_sidebar_comicsAndManga": "Comics & Manga",
+        "k_L_sidebar_periodicals": "Periodicals",
+        "k_L_filters": "Filter by",
+        "k_L_sidebar_all": "All Titles",
+        "k_L_sidebar_settings": "More",
+        "weblibrary_tab_series": "Series",
+        "weblibrary_tab_all": "All",
+        "weblibrary_sort_position": "Series Order",
+        "weblibrary_sort_position_rev": "Series Order (Reverse)",
+        "weblibrary_issue_count_in_series_singular": "You have ${x} of 1 chapter in this series.",
+        "weblibrary_issue_count_in_series": "You have ${x} of ${y} chapters in this series.",
+        "weblibrary_volume_count_in_series_singular": "You have ${x} of 1 volume in this series.",
+        "weblibrary_volume_count_in_series": "You have ${x} of ${y} volumes in this series.",
+        "weblibrary_complete_the_issue_series": "View all items in series.",
+        "weblibrary_complete_the_volume_series": "View all items in series.",
+        "weblibrary_see_full_issue_series": "See full series details.",
+        "weblibrary_see_full_volume_series": "See full series details.",
+        "weblibrary_empty_library_message": "Discover your next read by browsing the ${store}",
+        "k_L_sidebar_comics": "Comics",
+        "weblibrary_collection_badge_chapters": "CHAPTERS",
+        "weblibrary_collection_badge_volumes": "VOLUMES",
+        "weblibrary_collection_badge_legacy": "LOCAL COLLECTION",
+        "weblibrary_collection_items": "${number} items",
+        "k_L_filters_title": "Filter",
+        "k_l_search_results_title": "From your library",
+        "k_l_collections_banner_content": "<strong>This page now includes collections you've created on other devices linked to your account.</strong> Additionally, any new collections you create will be synced to your account automatically.",
+        "k_l_documents_banner_content": "<strong>To import and read personal files on any device linked to your account, add them to your library using <u>Send to Kindle.</u></strong>",
+        "k_l_local_file_text": "LOCAL FILE",
+        "k_l_local_file_tooltip": "This file is only stored on this device. To read it on all your devices, add it to your library using Send to Kindle.",
+        "k_l_send_to_kindle_page": "https://www.amazon.com/sendtokindle",
+        "k_L_sidebar_collections": "Collections",
+        "weblibrary_button_cancel": "Cancel",
+        "weblibrary_button_update": "Update",
+        "weblibrary_button_delete": "Delete",
+        "weblibrary_button_rename": "Rename",
+        "weblibrary_button_save": "Save",
+        "weblibrary_delete_collection_title": "Permanently delete?",
+        "weblibrary_name_collection_title": "Name Your Collection",
+        "weblibrary_name_collection_placeholder": "Name Your Collection",
+        "weblibrary_rename_collection_title": "Rename Your Collection",
+        "weblibrary_delete_collection_text": "This will permanently delete your collection \"${name}\" from this device. Books and any other content in this collection will remain in your library. This action can’t be undone.",
+        "weblibrary_update_required_warning": "Update Required",
+        "weblibrary_update_required_text": "The latest version of the Kindle app is required to read new titles.",
+        "k_L_back_to_collections": "Back to collections",
+        "k_L_welcome_popover_subtitle": "What's new?",
+        "k_L_welcome_popover_button": "Let’s go!",
+        "k_L_welcome_popover_app_title": "Welcome to the new Kindle app for Windows",
+        "k_L_welcome_popover_feature_library_title": "Easier library management",
+        "k_L_welcome_popover_feature_library_context": "More ways to filter, sort and search your library for something great to read.",
+        "k_L_welcome_popover_feature_sync_title": "Sync for personal docs",
+        "k_L_welcome_popover_feature_sync_context": "Files you import using Send to Kindle can be viewed and read on any device connected to your account",
+        "k_L_welcome_popover_feature_collections_title": "Your collections, anywhere",
+        "k_L_welcome_popover_feature_collections_context": "Your collections are now synced to your account, so you can see them on all of your devices",
+        "k_L_kindle_image": "Kindle image",
+        "weblibrary_edit_header": "Edit",
+        "weblibrary_create_header": "Create",
+        "weblibrary_button_download": "Download",
+        "weblibrary_empty_collection": "There are no items in this collection yet.",
+        "weblibrary_empty_collection_message": "Start adding books from your library by clicking the ${button} button.",
+        "weblibrary_empty_collection_view": "It looks like you don't have any Collections yet.",
+        "weblibrary_empty_collection_view_message": "Tap the + Create icon to create a new collection and start adding items to it",
+        "update_read_eboks_magazines": "Read eBooks & magazines",
+        "update_amazon_kindle_version": "Kindle Version v${version}",
+        "update_downloading_update": "Downloading update...",
+        "update_about_this_update" : "About this update",
+        "weblibrary_learn_more" : "Learn more"
+    }
+</script>
+<script id="itemViewResponse" type="application/json">
+    {
+        "itemsList": [],
+        "paginationToken": "0",
+        "libraryType": "BOOKS"
+    }
+</script>
+<script id="features" type="application/json">
+    []
+</script>
+<script id="isMobileDevice" type="boolean">
+      false
+
+</script>
+<ul class="bypass">
+    <li>
+        <a href="#library">Skip to the book library</a>
+    </li>
+</ul>
+<div id="web-library-root">
+    <div class="kwl-app">
+        <div class="library">
+            <div class="main-container">
+                <header class="header">
+                    <div class="topbar">
+                        <div class="kindleLogo"></div>
+                    </div>
+                </header>
+            </div>
+            <div class="initialLoading">
+                <div class="loadingSpinner">
+                    <svg
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 60 60"
+                            xmlSpace="preserve">
+                        <path
+                                id="spinner"
+                                fill='#000'
+                                d="M 30 5 a 25 25 0 0 1 25 25 a 2 2 0 0 1 -4 0 a 21 21 0 0 0 -21 -21 a 2 2 0 0 1 0 -4"
+                                transform="rotate(0, 30, 30)"
+                        />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="bridge.js"></script>
+<script type="text/javascript" src="library-bundle.js"></script>
+</body>
+</html>
